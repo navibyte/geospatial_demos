@@ -12,7 +12,7 @@ is a companion demo code repository for the
 
 ## :sparkles: Introduction
 
-<img src="assets/screenshots/map_view.jpg" align="right" width="50%" title="Earthquake Map - Map View" />
+<img src="assets/screenshots/map_view.jpg" align="right" width="40%" title="Earthquake Map - Map View" />
 
 Shows earthquakes fetched from the [USGS web service](https://earthquake.usgs.gov/earthquakes/feed/) on a basic map view.
 
@@ -37,7 +37,7 @@ Flutter packages utilized:
 * [flutter_riverpod](https://pub.dev/packages/flutter_riverpod): an efficient and straightforward state management library (see also [Riverpod](https://riverpod.dev/) docs)
 * [google_maps_flutter](https://pub.dev/packages/google_maps_flutter): a map view widget for iOS and Android platforms (Note: an API key must be configured)
 
-<img src="assets/screenshots/settings_view.png" width="50%" align="center" title="Earthquake Map - Settings View" />
+<img src="assets/screenshots/settings_view.png" width="40%" title="Earthquake Map - Settings View" />
 
 ## ⚙️ Setup
 
