@@ -12,7 +12,7 @@ is a companion demo code repository for the
 
 ## :sparkles: Introduction
 
-<img src="assets/screenshots/map_view.jpg" align="right" title="Earthquake Map - Map View" />
+<img src="assets/screenshots/map_view.jpg" align="right" width="50%" title="Earthquake Map - Map View" />
 
 Shows earthquakes fetched from the [USGS web service](https://earthquake.usgs.gov/earthquakes/feed/) on a basic map view.
 
@@ -26,8 +26,6 @@ Notes:
 * To run this demo, you need to obtain and configure an API key for Google Maps.
 * Supported platforms: only iOS and Android
 
-<img src="assets/screenshots/settings_view.png" align="right" title="Earthquake Map - Settings View" />
-
 Dart packages utilized:
 * [equatable](https://pub.dev/packages/equatable): equality and hash utils
 * [geobase](https://pub.dev/packages/geobase): geospatial data structures and vector data support for GeoJSON
@@ -38,6 +36,8 @@ Dart packages utilized:
 Flutter packages utilized:
 * [flutter_riverpod](https://pub.dev/packages/flutter_riverpod): an efficient and straightforward state management library (see also [Riverpod](https://riverpod.dev/) docs)
 * [google_maps_flutter](https://pub.dev/packages/google_maps_flutter): a map view widget for iOS and Android platforms (Note: an API key must be configured)
+
+<img src="assets/screenshots/settings_view.png" width="50%" align="center" title="Earthquake Map - Settings View" />
 
 ## ⚙️ Setup
 
