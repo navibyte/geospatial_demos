@@ -69,7 +69,7 @@ Check instructions to setup [Google Maps for Flutter](https://pub.dev/packages/g
     * settings/
       * [settings_view.dart](lib/src/settings/settings_view.dart) (the settings view shows a selection for units and filter parameters)
     * utils/
-      * [string.dart] (utility functions for String manipulation)
+      * [strings.dart](lib/src/utils/strings.dart) (utility functions for String manipulation)
 
 ## :house_with_garden: Authors
 
