@@ -10,6 +10,10 @@ The project is a part of the
 is a companion demo code repository for the 
 [Geospatial tools for Dart](https://github.com/navibyte/geospatial).
 
+Edits for this sample app:
+* 📅 2022-08-29 (the first version)
+* ✍️ 2022-09-04 (last updated)
+
 ## :sparkles: Introduction
 
 <img src="assets/screenshots/map_view.jpg" align="right" width="40%" title="Earthquake Map - Map View" />
