@@ -6,15 +6,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geobase/vector_data.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'earthquake_filter.dart';
 import 'earthquake_presentation.dart';
-import 'earthquake_source.dart';
+import 'earthquake_query.dart';
+import 'earthquake_repository.dart';
 
 /// A provider providing a view model with a set of earthquake marker objects.
-/// 
+///
 /// The state provided is a function returning `Set<Marker>` with `BuildContext`
 /// as a parameter (allowing markers shown on a map to be customized by a state
 /// of UI too).
@@ -24,7 +23,7 @@ final earthquakeMarkers =
   final filter = ref.watch(earthquakeFilter);
 
   // get earthquakes (as feature items) from the feature source using the filter
-  final result = ref.watch(earthquakeSource(filter));
+  final result = ref.watch(earthquakeRepository(filter));
 
   // watch also a provider for formatting earthquake objects
   final formatter = ref.watch(earthquakeFormatter);
@@ -39,30 +38,27 @@ final earthquakeMarkers =
           // (todo: dispay an error message to an user)
         },
         data: (earthquakes) {
-          // got earthquake data from a future provider, convert GeoJSON
-          // Feature objects to Marker object recognized by Google Maps.
+          // got earthquake data from a future provider, convert Earthquake
+          // entity objects to Marker object recognized by Google Maps.
           final markers = <Marker>{};
-          for (final eq in earthquakes.collection.features) {
+          for (final eq in earthquakes) {
             //print('${eq.id} ${eq.properties['place']}');
-            final point = eq.geometry;
-            if (point is Point) {
-              // get position of the point geometry as Geographic position
-              final position = point.position.asGeographic;
-  
-              // format title/subtitle texts and create a new Marker
-              final title = formatter.call(eq, short: true);
-              final subtitle = formatter.call(eq);
-              markers.add(
-                Marker(
-                  markerId: MarkerId((eq.id ?? '?').toString()),
-                  position: LatLng(position.lat, position.lon),
-                  infoWindow: InfoWindow(
-                    title: title,
-                    snippet: subtitle,
-                  ),
+            // get position of the point geometry as Geographic position
+            final position = eq.epicenter;
+
+            // format title/subtitle texts and create a new Marker
+            final title = formatter.call(eq, short: true);
+            final subtitle = formatter.call(eq);
+            markers.add(
+              Marker(
+                markerId: MarkerId((eq.id ?? '?').toString()),
+                position: LatLng(position.lat, position.lon),
+                infoWindow: InfoWindow(
+                  title: title,
+                  snippet: subtitle,
                 ),
-              );
-            }
+              ),
+            );
           }
           return markers;
         },

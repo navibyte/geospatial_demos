@@ -7,8 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '/src/data/earthquakes/earthquake_filter.dart';
-import '/src/data/earthquakes/earthquake_model.dart';
+import '/src/data/earthquakes/earthquake_query.dart';
 import '/src/preferences/units.dart';
 
 /// The settings view shows a selection for units and filter parameters for

@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geodata/geojson_client.dart';
 
 import 'earthquake_model.dart';
+import 'earthquake_query.dart';
 
 /// A future provider to access feature items from the USGS earthquake service.
 ///
@@ -19,12 +20,12 @@ import 'earthquake_model.dart';
 ///
 /// This (Riverpod) future provider is setup with "autoDispose" mode and it
 /// caches data for 15 minutes.
-/// 
+///
 /// The returned Future wraps a `FeatureItems` object that contains
 /// `FeatureCollection` with `Feature` objects representing geospatial features
 /// (with id, geometry and properties as members).
-final earthquakeSource =
-    FutureProvider.autoDispose.family<FeatureItems, EarthquakeQuery>(
+final earthquakeRepository =
+    FutureProvider.autoDispose.family<List<Earthquake>, EarthquakeQuery>(
   (ref, query) async {
     // create a feature source for the USGS earthquake service
     final source = geoJsonHttpClient(
@@ -35,7 +36,11 @@ final earthquakeSource =
     print('fetching earthquakes: ${query.toUri()}');
 
     // fetch all features items from the source - returned as a future
-    return source.itemsAll();
+    final items = await source.itemsAll();
+
+    return items.collection.features
+        .map<Earthquake>(Earthquake.fromUSGS)
+        .toList(growable: false);
   },
 
   // cache data for 15 minuts

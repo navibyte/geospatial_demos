@@ -5,18 +5,19 @@
 // Docs: https://github.com/navibyte/geospatial_demos
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geobase/vector_data.dart';
 import 'package:intl/intl.dart';
 
 import '/src/preferences/units.dart';
 import '/src/utils/strings.dart';
 
-/// A formatter function to print the [earthquake] feature as text.
+import 'earthquake_model.dart';
+
+/// A formatter function to print [earthquake] as text.
 ///
 /// Set [short] to true when a short text represention is neeed. Otherwise text
 /// representation can be a detailed description.
 typedef FormatEarthquake = String Function(
-  Feature earthquake, {
+  Earthquake earthquake, {
   bool? short,
   UnitSystem? units,
 });
@@ -48,11 +49,11 @@ FormatEarthquake _formatEarthquakeDefault({
   // return formatter function
   return (eq, {short, units}) {
     final buf = StringBuffer();
-    _writeMagnitude(buf, eq.properties['mag'] as num);
+    _writeMagnitude(buf, eq.magnitude);
     final long = !(short ?? false);
     if (long) {
-      final place = eq.properties['place'] as String;
-      if (place.isNotEmpty) {
+      final place = eq.place;
+      if (place != null) {
         buf.write(isDigit(place, 0) ? ' located ' : ' near ');
         _writeEarthquakePlaceText(
           buf,
@@ -65,11 +66,7 @@ FormatEarthquake _formatEarthquakeDefault({
       buf.write(' ');
     }
 
-    final time = DateTime.fromMillisecondsSinceEpoch(
-      eq.properties['time'] as int,
-      isUtc: true,
-    );
-    buf.write(_formatLocalDateFromUTC(time));
+    buf.write(_formatLocalDateFromUTC(eq.time));
     return buf.toString();
   };
 }

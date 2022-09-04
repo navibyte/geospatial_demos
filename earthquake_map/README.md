@@ -57,10 +57,10 @@ Check instructions to setup [Google Maps for Flutter](https://pub.dev/packages/g
 * lib/
   * src/
     * data/earthquakes/
-      * [earthquake_filter.dart](lib/src/data/earthquakes/earthquake_filter.dart) (the state notifier provider for query filters)
-      * [earthquake_model.dart](lib/src/data/earthquakes/earthquake_model.dart) (the query model class and enums)  
+      * [earthquake_model.dart](lib/src/data/earthquakes/earthquake_model.dart) (the earthquake entity class as represented by a client-side repository)  
       * [earthquake_presentation.dart](lib/src/data/earthquakes/earthquake_presentation.dart) (the provider for a formatter function producing text representations of earthquakes) 
-      * [earthquake_source.dart](lib/src/data/earthquakes/earthquake_source.dart) (the future provider to access feature items from the USGS earthquake service)
+      * [earthquake_query.dart](lib/src/data/earthquakes/earthquake_query.dart) (the query model class and enums, and the state notifier provider for query filters)      
+      * [earthquake_repository.dart](lib/src/data/earthquakes/earthquake_repository.dart) (the future provider to access feature items from the USGS earthquake service)
       * [earthquake_view_model.dart](lib/src/data/earthquakes/earthquake_view_model.dart) (the provider providing a view model with a set of earthquake marker objects)
     * map/
       * [map_view.dart](lib/src/map/map_view.dart) (the map view showing Google Maps and earthquakes as markers)
