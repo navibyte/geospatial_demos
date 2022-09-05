@@ -13,6 +13,12 @@ enum EarthquakeProducer {
   usgs(
     supportsMagnitudeFilter: true,
     supportsPastFilter: true,
+  ),
+
+  /// The British Geological Survey
+  bgs(
+    supportsMagnitudeFilter: false,
+    supportsPastFilter: false,
   );
 
   const EarthquakeProducer({
@@ -21,7 +27,7 @@ enum EarthquakeProducer {
   });
 
   String get title => name.toUpperCase();
-  
+
   final bool supportsMagnitudeFilter;
   final bool supportsPastFilter;
 }
@@ -47,16 +53,17 @@ class Earthquake extends Equatable {
   /// Typical value range is [-1.0, 10.0] according to USGS.
   final double magnitude;
 
-  /// The geographic position (longitude, latitude, elevation) for an earthquake
-  /// event in the WGS84 reference frame.
+  /// The geographic position (longitude, latitude) with an optional elevation
+  /// for an earthquake event in the WGS84 reference frame.
   ///
-  /// Elevations (in meters) are negative values for earthquakes.
+  /// When available, elevations (in meters) are negative values for
+  /// earthquakes.
   final Geographic epicenter;
 
-  /// The depth (in kilometers) where the earthquake begins to rupture.
+  /// An optional depth (in kilometers) where the earthquake begins to rupture.
   ///
   /// Depths (in kilometers) are positive values and in the range [0, 1000].
-  final double depthKM;
+  final double? depthKM;
 
   /// An optional place name or other desciption for a place near an earthquke
   /// event.
@@ -69,7 +76,7 @@ class Earthquake extends Equatable {
     required this.time,
     required this.magnitude,
     required this.epicenter,
-    required this.depthKM,
+    this.depthKM,
     this.place,
   });
 
@@ -103,6 +110,45 @@ class Earthquake extends Equatable {
         epicenter: positionWithElev,
         depthKM: depth,
         place: eq.properties['place']?.toString(),
+      );
+    } else {
+      throw const FormatException('earthquake expects point geometry');
+    }
+  }
+
+  /// Creates an earthquake entity from GeoJSON [Feature] objected produced by
+  /// BGS.
+  factory Earthquake.fromBGS(Feature eq, {String? place}) {
+    final point = eq.geometry;
+    if (point is Point) {
+      // BGS writes position to feature's geometry field as a point geometry
+      // with a position containg longitude and latitude coordinates
+      final position = point.position.asGeographic;
+
+      // get depth ("km below sea") from a position produced by BGS
+      // (BGS may has depth data also null)
+      final depth = (eq.properties['depth'] as num?)?.toDouble();
+
+      // positions have depth converted to elevation ("meters above sea")
+      // (for those earthquakes that contain that depth)
+      final positionMaybeWithElev = depth != null
+          ? position.copyWith(z: -position.elev * 1000.0)
+          : position;
+
+      // UTC time from milliseconds
+      final time = DateTime.parse(
+        eq.properties['datetime'].toString(),
+      );
+
+      // create an entity
+      return Earthquake(
+        id: eq.id,
+        producer: EarthquakeProducer.bgs,
+        time: time,
+        magnitude: (eq.properties['ml'] as num).toDouble(),
+        epicenter: positionMaybeWithElev,
+        depthKM: depth,
+        place: place,
       );
     } else {
       throw const FormatException('earthquake expects point geometry');

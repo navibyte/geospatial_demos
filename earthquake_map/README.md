@@ -12,17 +12,21 @@ is a companion demo code repository for the
 
 Edits for this sample app:
 * 📅 2022-08-29 (the first version)
-* ✍️ 2022-09-04 (last updated)
+* ✍️ 2022-09-05 (last updated)
 
 ## :sparkles: Introduction
 
 <img src="assets/screenshots/map_view.jpg" align="right" width="40%" title="Earthquake Map - Map View" />
 
-Shows earthquakes fetched from the [USGS web service](https://earthquake.usgs.gov/earthquakes/feed/) on a basic map view.
+Shows earthquakes fetched from the 
+[GeoJSON feed](https://earthquake.usgs.gov/earthquakes/feed/)
+by USGS (the United States Geological Survey) and 
+[OGC API Feature service](https://ogcapi.bgs.ac.uk/collections/recentearthquakes?f=html)
+by BGS (the British Geological Survey) on a basic map view.
 
 Coding topics:
 * **State management** (settings, query filters, Web API data access, presentation formatters, map view markers).
-* Using a **Web API client to access geospatial data** formatted as [GeoJSON](https://geojson.org/) feature and geometry objects.
+* Using a **Web API client to access geospatial data** formatted as [GeoJSON](https://geojson.org/) feature and geometry objects from a custom REST service or a standardized [OGC API Features](https://ogcapi.ogc.org/features/) service.
 * Visualizing earthquakes (that are geospatial feature entities with point geometries) as **map markers on a map view**.
 
 Notes:
@@ -33,7 +37,7 @@ Notes:
 Dart packages utilized:
 * [equatable](https://pub.dev/packages/equatable): equality and hash utils
 * [geobase](https://pub.dev/packages/geobase): geospatial data structures and vector data support for GeoJSON
-* [geodata](https://pub.dev/packages/geodata): fetching a Web API with GeoJSON data
+* [geodata](https://pub.dev/packages/geodata): fetching a Web API with GeoJSON data from REST or OGC API Features service
 * [intl](https://pub.dev/packages/intl): localized date formatting
 * [state_notifier](https://pub.dev/packages/state_notifier): helps manipulating a state object with multiple ways to update it 
 
@@ -61,10 +65,10 @@ Check instructions to setup [Google Maps for Flutter](https://pub.dev/packages/g
 * lib/
   * src/
     * data/earthquakes/
-      * [earthquake_model.dart](lib/src/data/earthquakes/earthquake_model.dart) (the earthquake entity class as represented by a client-side repository)  
+      * [earthquake_model.dart](lib/src/data/earthquakes/earthquake_model.dart) (the earthquake entity class as represented by a client-side repository, also factory methods from USGS and BGS feature object models)  
       * [earthquake_presentation.dart](lib/src/data/earthquakes/earthquake_presentation.dart) (the provider for a formatter function producing text representations of earthquakes) 
       * [earthquake_query.dart](lib/src/data/earthquakes/earthquake_query.dart) (the query model class and enums, and the state notifier provider for query filters)      
-      * [earthquake_repository.dart](lib/src/data/earthquakes/earthquake_repository.dart) (the future provider to access feature items from the USGS earthquake service)
+      * [earthquake_repository.dart](lib/src/data/earthquakes/earthquake_repository.dart) (the future provider to access feature items from the USGS and BGS earthquake services)
       * [earthquake_view_model.dart](lib/src/data/earthquakes/earthquake_view_model.dart) (the provider providing a view model with a set of earthquake marker objects)
     * map/
       * [map_view.dart](lib/src/map/map_view.dart) (the map view showing Google Maps and earthquakes as markers)

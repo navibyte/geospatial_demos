@@ -82,7 +82,7 @@ class EarthquakeQuery extends Equatable {
       );
 
   @override
-  List<Object?> get props => [magnitude, past];
+  List<Object?> get props => [producer, magnitude, past];
 }
 
 /// The state notifier provider for an query used to filter earthquakes.

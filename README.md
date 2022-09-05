@@ -18,10 +18,10 @@ gespatial Web APIs.
 ## :sparkles: Code samples
 
 [earthquake_map](earthquake_map)
-* Shows earthquakes fetched from the [USGS web service](https://earthquake.usgs.gov/earthquakes/feed/) on a basic map view.
+* Shows earthquakes fetched from the [GeoJSON feed](https://earthquake.usgs.gov/earthquakes/feed/) by USGS (the United States Geological Survey) and [OGC API Feature service](https://ogcapi.bgs.ac.uk/collections/recentearthquakes?f=html) by BGS (the British Geological Survey) on a basic map view.
 * Coding topics
   * **State management** (settings, query filters, Web API data access, presentation formatters, map view markers).
-  * Using a **Web API client to access geospatial data** formatted as [GeoJSON](https://geojson.org/) feature and geometry objects.
+  * Using a **Web API client to access geospatial data** formatted as [GeoJSON](https://geojson.org/) feature and geometry objects from a custom REST service or a standardized [OGC API Features](https://ogcapi.ogc.org/features/) service.
   * Visualizing earthquakes (that are geospatial feature entities with point geometries) as **map markers on a map view**.
 * Notes
   * The UI of this sample app is very basic. The app focuses on a clean demonstration of the topics mentioned above.
