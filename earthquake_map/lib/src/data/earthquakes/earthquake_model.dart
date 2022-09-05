@@ -9,8 +9,21 @@ import 'package:geobase/geobase.dart' show Geographic, Feature, Point;
 
 /// The producer for earthquake data.
 enum EarthquakeProducer {
-  /// The United States Geological Survey.
-  usgs
+  /// The United States Geological Survey
+  usgs(
+    supportsMagnitudeFilter: true,
+    supportsPastFilter: true,
+  );
+
+  const EarthquakeProducer({
+    required this.supportsMagnitudeFilter,
+    required this.supportsPastFilter,
+  });
+
+  String get title => name.toUpperCase();
+  
+  final bool supportsMagnitudeFilter;
+  final bool supportsPastFilter;
 }
 
 /// An earthquake entity as represented by a client-side repository.
