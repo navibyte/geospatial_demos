@@ -10,6 +10,13 @@ import 'package:geodata/geojson_client.dart';
 import 'earthquake_model.dart';
 import 'earthquake_query.dart';
 
+/// Returns an URL to the USGS earthquake service with the filter parameters
+/// magnitude and past applied.
+Uri _geoJsonUriToUsgs(EarthquakeQuery query) => Uri.parse(
+      'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/'
+      '${query.magnitude.code}_${query.past.code}.geojson',
+    );
+
 /// A future provider to access feature items from the USGS earthquake service.
 ///
 /// The USGS earthquake service used in this sample provides GeoJSON data with
@@ -28,12 +35,13 @@ final earthquakeRepository =
     FutureProvider.autoDispose.family<List<Earthquake>, EarthquakeQuery>(
   (ref, query) async {
     // create a feature source for the USGS earthquake service
+    final location = _geoJsonUriToUsgs(query);
     final source = geoJsonHttpClient(
-      location: query.toUri(),
+      location: _geoJsonUriToUsgs(query),
     );
 
     // ignore: avoid_print
-    print('fetching earthquakes: ${query.toUri()}');
+    print('fetching earthquakes: $location');
 
     // fetch all features items from the source - returned as a future
     final items = await source.itemsAll();

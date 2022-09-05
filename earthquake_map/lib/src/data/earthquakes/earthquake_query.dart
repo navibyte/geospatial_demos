@@ -63,13 +63,6 @@ class EarthquakeQuery extends Equatable {
         past: past ?? this.past,
       );
 
-  /// Returns an URL to the USGS earthquake service with the filter parameters 
-  /// [magnitude] and [past] applied.
-  Uri toUri() => Uri.parse(
-        'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/'
-        '${magnitude.code}_${past.code}.geojson',
-      );
-
   @override
   List<Object?> get props => [magnitude, past];
 }
