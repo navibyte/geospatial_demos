@@ -47,8 +47,9 @@ final earthquakeMarkers =
             final position = eq.epicenter;
 
             // format title/subtitle texts and create a new Marker
-            final title = formatter.call(eq, short: true);
-            final subtitle = formatter.call(eq);
+            final title = formatter.call(eq, kind: PresentationKind.title);
+            final subtitle =
+                formatter.call(eq, kind: PresentationKind.subtitle);
             markers.add(
               Marker(
                 markerId: MarkerId((eq.id ?? '?').toString()),

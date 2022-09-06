@@ -12,13 +12,15 @@ import '/src/utils/strings.dart';
 
 import 'earthquake_model.dart';
 
+/// An enum specifying the type of presentation.
+enum PresentationKind { title, subtitle }
+
 /// A formatter function to print [earthquake] as text.
 ///
-/// Set [short] to true when a short text represention is neeed. Otherwise text
-/// representation can be a detailed description.
+/// Set [kind] to specify the type of presentation.
 typedef FormatEarthquake = String Function(
   Earthquake earthquake, {
-  bool? short,
+  required PresentationKind kind,
   UnitSystem? units,
 });
 
@@ -31,15 +33,15 @@ final earthquakeFormatter = Provider<FormatEarthquake>((ref) {
   return _formatEarthquakeDefault(units: units);
 });
 
-/// Formats an earthquake as text.
+/// Returns a function that formats an earthquake as text.
 ///
 /// With [units] set to `metric` the result is like:
-/// * short: "M 5.2 Aug 23 at 7:29 PM"
-/// * not short: "M 5.2 located 149 km SE of Pangai, Tonga at Aug 23 at 7:29 PM"
+/// * title: "M 5.1 (Sep 5 at 4:49 PM)"
+/// * subtitle: "Near northern Mid-Atlantic Ridge. Depth 10.0 km."
 ///
 /// With [units] set to `imperial` the result is like:
-/// * short: "M 5.2 Aug 23 at 7:29 PM"
-/// * not short: "M 5.2 located 93 mi SE of Pangai, Tonga at Aug 23 at 7:29 PM"
+/// * title: "M 5.1 (Sep 5 at 4:49 PM)"
+/// * subtitle: "Near northern Mid-Atlantic Ridge. Depth 6.2 mi."
 FormatEarthquake _formatEarthquakeDefault({
   UnitSystem units = UnitSystem.metric,
 }) {
@@ -47,26 +49,43 @@ FormatEarthquake _formatEarthquakeDefault({
   final defaultUnits = units;
 
   // return formatter function
-  return (eq, {short, units}) {
+  return (eq, {required kind, units}) {
     final buf = StringBuffer();
-    _writeMagnitude(buf, eq.magnitude);
-    final long = !(short ?? false);
-    if (long) {
-      final place = eq.place;
-      if (place != null) {
-        buf.write(isDigit(place, 0) ? ' located ' : ' near ');
-        _writeEarthquakePlaceText(
-          buf,
-          place,
-          units: units ?? defaultUnits,
-        );
-      }
-      buf.write(' at ');
-    } else {
-      buf.write(' ');
+    switch (kind) {
+      case PresentationKind.title:
+        _writeMagnitude(buf, eq.magnitude);
+        buf.write(' (');
+        buf.write(_formatLocalDateFromUTC(eq.time));
+        buf.write(')');
+        break;
+      case PresentationKind.subtitle:
+        final place = eq.place;
+        if (place != null && place.isNotEmpty) {
+          if (!isDigit(place, 0)) {
+            buf.write('Near ');
+          }
+          _writeEarthquakePlaceText(
+            buf,
+            place,
+            units: units ?? defaultUnits,
+          );
+        } else {
+          buf
+            ..write('Near latitude ')
+            ..write(eq.epicenter.lat.toStringAsFixed(3))
+            ..write('° longitude ')
+            ..write(eq.epicenter.lon.toStringAsFixed(3))
+            ..write('°');
+        }
+        final depth = eq.depthKM;
+        if (depth != null) {
+          buf.write('. Depth ');
+          _writeDepth(buf, depth, units: units ?? defaultUnits);
+          buf.write('.');
+        }
+        break;
     }
 
-    buf.write(_formatLocalDateFromUTC(eq.time));
     return buf.toString();
   };
 }
@@ -76,13 +95,26 @@ void _writeMagnitude(StringSink buf, num magn) => buf
   ..write('M ')
   ..write(magn.toStringAsFixed(1));
 
+/// Formats earthquake depth like "2.1 km".
+void _writeDepth(StringSink buf, num depth, {required UnitSystem units}) {
+  if (units == UnitSystem.imperial) {
+    buf
+      ..write((depth / 1.609).toStringAsFixed(1))
+      ..write(' mi');
+  } else {
+    buf
+      ..write(depth.toStringAsFixed(1))
+      ..write(' km');
+  }
+}
+
 /// Format earthquake (by USGS) place [text] according to [units].
 void _writeEarthquakePlaceText(
   StringSink buf,
   String text, {
-  UnitSystem? units,
+  required UnitSystem units,
 }) {
-  if ((units ?? UnitSystem.metric) == UnitSystem.imperial) {
+  if (units == UnitSystem.imperial) {
     final i = text.indexOf('km ');
     if (i > 0 && i + 3 < text.length) {
       // transform "16km SE of Some Place"
@@ -106,14 +138,15 @@ String _formatLocalDateFromUTC(DateTime timeUTC) {
   final local = timeUTC.toLocal();
   final now = DateTime.now();
 
-  final isToday = local.year == now.year &&
-      local.month == now.month &&
-      local.day == now.day;
+  final isThisYear = local.year == now.year;
+  final isToday =
+      isThisYear && local.month == now.month && local.day == now.day;
+
   if (isToday) {
     final f = DateFormat.jm();
     return 'Today ${f.format(local)}';
   }
 
-  final f = DateFormat("MMM d 'at'").add_jm();
+  final f = DateFormat(isThisYear ? "MMM d 'at'" : "yyyy MMM d 'at'").add_jm();
   return f.format(local);
 }
