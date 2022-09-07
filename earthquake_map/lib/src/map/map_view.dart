@@ -31,20 +31,35 @@ class _MapViewState extends ConsumerState<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    // watch for earthquake markers (as a factory function) shown on the map
-    // (the map is updated when markers are changed)
-    final markers = ref.watch(earthquakeMarkers);
+    // watch for earthquake changes
+    final layer = ref.watch(earthquakeLayer);
 
-    return GoogleMap(
-      // configure with the `hybrid` background map and an initial position
-      mapType: MapType.hybrid,
-      initialCameraPosition: _initialPosition,
+    // state is calculated as function of context
+    final state = layer.call(context);
 
-      // this is called "when the map is ready to be used"
-      onMapCreated: _controller.complete,
+    // get earthquake markers
+    final markers = state.markers;
 
-      // get markers from a factory function taking the context as an argument
-      markers: markers(context),
+    return Stack(
+      children: <Widget>[
+        // `hybrid` background map with earthquakes markers
+        GoogleMap(
+          mapType: MapType.hybrid,
+          initialCameraPosition: _initialPosition,
+          markers: markers ?? {},
+
+          // this is called "when the map is ready to be used"
+          onMapCreated: _controller.complete,
+        ),
+
+        // a simple loading indicator over the map
+        if (state.isLoading)
+          const Positioned(
+            top: 30,
+            left: 30,
+            child: CircularProgressIndicator(),
+          ),
+      ],
     );
   }
 }
