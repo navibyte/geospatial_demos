@@ -28,9 +28,7 @@ const _bgsEarthquakesCollection = 'recentearthquakes';
 /// This (Riverpod) future provider is setup with "autoDispose" mode and it
 /// caches data for 15 minutes.
 ///
-/// The returned Future wraps a `FeatureItems` object that contains
-/// `FeatureCollection` with `Feature` objects representing geospatial features
-/// (with id, geometry and properties as members).
+/// The returned Future wraps a list of `Earthquake` objects.
 final earthquakeRepository =
     FutureProvider.autoDispose.family<List<Earthquake>, EarthquakeQuery>(
   (ref, query) async {
@@ -64,7 +62,7 @@ Future<List<Earthquake>> _fetchUsgsEarthquakes(EarthquakeQuery query) async {
 
   // map feature instances to Earthquake instances
   return items.collection.features
-      .map<Earthquake>(Earthquake.fromUSGS)
+      .map(Earthquake.fromUSGS)
       .toList(growable: false);
 }
 
@@ -89,6 +87,6 @@ Future<List<Earthquake>> _fetchBgsEarthquakes(EarthquakeQuery query) async {
 
   // map feature instances to Earthquake instances
   return items.collection.features
-      .map<Earthquake>(Earthquake.fromBGS)
+      .map(Earthquake.fromBGS)
       .toList(growable: false);
 }
