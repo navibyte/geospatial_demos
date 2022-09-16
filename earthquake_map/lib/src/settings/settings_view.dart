@@ -4,10 +4,10 @@
 //
 // Docs: https://github.com/navibyte/geospatial_demos
 
-import 'package:earthquake_map/src/data/earthquakes/earthquake_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '/src/data/earthquakes/earthquake_model.dart';
 import '/src/data/earthquakes/earthquake_query.dart';
 import '/src/preferences/units.dart';
 
