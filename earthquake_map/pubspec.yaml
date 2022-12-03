@@ -2,7 +2,7 @@ name: earthquake_map
 description: A Flutter app showing earthquakes fetched from the USGS web service.
 publish_to: 'none'
 
-version: 0.1.0
+version: 0.1.1
 
 environment:
   sdk: ">=2.17.1 <3.0.0"
@@ -14,10 +14,10 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   equatable: ^2.0.0 
-  geobase: ^0.3.0
-  geodata: ^0.10.0
+  geobase: ^0.4.0
+  geodata: ^0.11.0
   google_maps_flutter: ^2.0.0
-  flutter_riverpod: ^2.0.0-dev.9
+  flutter_riverpod: ^2.0.0
   intl: ^0.17.0
   state_notifier: ^0.7.0  
 

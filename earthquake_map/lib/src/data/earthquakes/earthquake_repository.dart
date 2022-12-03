@@ -4,6 +4,8 @@
 //
 // Docs: https://github.com/navibyte/geospatial_demos
 
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geodata/geojson_client.dart' show geoJsonHttpClient;
 import 'package:geodata/ogcapi_features_client.dart'
@@ -32,6 +34,9 @@ const _bgsEarthquakesCollection = 'recentearthquakes';
 final earthquakeRepository =
     FutureProvider.autoDispose.family<List<Earthquake>, EarthquakeQuery>(
   (ref, query) async {
+    // cache data for 15 minutes, NOTE: remove this as soon as cacheTime is back
+    ref.cacheFor(const Duration(minutes: 15));
+
     switch (query.producer) {
       case EarthquakeProducer.usgs:
         return _fetchUsgsEarthquakes(query);
@@ -41,7 +46,7 @@ final earthquakeRepository =
   },
 
   // cache data for 15 minuts
-  cacheTime: const Duration(minutes: 15),
+  // cacheTime: const Duration(minutes: 15),
 );
 
 /// Fetches earthquakes as GeoJSON feature collection from the USGS earthquake
@@ -89,4 +94,15 @@ Future<List<Earthquake>> _fetchBgsEarthquakes(EarthquakeQuery query) async {
   return items.collection.features
       .map(Earthquake.fromBGS)
       .toList(growable: false);
+}
+
+// See https://github.com/rrousselGit/riverpod/issues/1664
+// ignore: strict_raw_type
+extension _AutoDisposeRefHack on AutoDisposeRef {
+  // When invoked keeps your provider alive for [duration]
+  void cacheFor(Duration duration) {
+    final link = keepAlive();
+    final timer = Timer(duration, link.close);
+    onDispose(timer.cancel);
+  }
 }
