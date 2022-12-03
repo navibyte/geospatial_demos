@@ -7,9 +7,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geodata/geojson_client.dart' show geoJsonHttpClient;
-import 'package:geodata/ogcapi_features_client.dart'
-    show ogcApiFeaturesHttpClient;
+import 'package:geodata/geodata.dart' show GeoJSONFeatures, OGCAPIFeatures;
 
 import 'earthquake_model.dart';
 import 'earthquake_query.dart';
@@ -57,7 +55,7 @@ final earthquakeRepository =
 Future<List<Earthquake>> _fetchUsgsEarthquakes(EarthquakeQuery query) async {
   // create a feature source for the USGS earthquake service
   final location = _usgsEarthquakesUri(query);
-  final source = geoJsonHttpClient(location: location);
+  final source = GeoJSONFeatures.http(location: location);
 
   // ignore: avoid_print
   print('fetching earthquakes (custom GeoJSON service by USGS): $location');
@@ -79,7 +77,7 @@ Future<List<Earthquake>> _fetchUsgsEarthquakes(EarthquakeQuery query) async {
 Future<List<Earthquake>> _fetchBgsEarthquakes(EarthquakeQuery query) async {
   // create an OGC API Features client for the BGS earthquake service
   final location = _bgsEarthquakesUri;
-  final client = ogcApiFeaturesHttpClient(endpoint: location);
+  final client = OGCAPIFeatures.http(endpoint: location);
 
   // ignore: avoid_print
   print('fetching earthquakes (OGC API Features service by BGS): $location');
