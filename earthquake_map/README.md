@@ -12,7 +12,7 @@ is a companion demo code repository for the
 
 Edits for this sample app:
 * 📅 2022-08-29 (the first version)
-* ✍️ 2022-09-08 (last updated)
+* ✍️ 2022-12-03 (last updated)
 
 ## :sparkles: Introduction
 
@@ -182,7 +182,7 @@ Fetch GeoJSON data from USGS service (a custom REST API):
 Future<List<Earthquake>> _fetchUsgsEarthquakes(EarthquakeQuery query) async {
   // create a feature source for the USGS earthquake service
   final location = _usgsEarthquakesUri(query);
-  final source = geoJsonHttpClient(location: location);
+  final source = GeoJSONFeatures.http(location: location);
 
   // fetch all features items from the source
   final items = await source.itemsAll();
@@ -205,7 +205,7 @@ Fetch GeoJSON data from BGS service (a standardized OGC API Features service):
 Future<List<Earthquake>> _fetchBgsEarthquakes(EarthquakeQuery query) async {
   // create an OGC API Features client for the BGS earthquake service
   final location = _bgsEarthquakesUri;
-  final client = ogcApiFeaturesHttpClient(endpoint: location);
+  final client = OGCAPIFeatures.http(endpoint: location);
 
   // for OGC API Features service, get first a feature source for a collection
   final source = await client.collection(_bgsEarthquakesCollection);
@@ -234,6 +234,9 @@ delivered as a "family" parameter).
 final earthquakeRepository =
     FutureProvider.autoDispose.family<List<Earthquake>, EarthquakeQuery>(
   (ref, query) async {
+    // cache data for 15 minutes, NOTE: remove this as soon as cacheTime is back
+    ref.cacheFor(const Duration(minutes: 15));
+
     switch (query.producer) {
       case EarthquakeProducer.usgs:
         return _fetchUsgsEarthquakes(query);
@@ -243,8 +246,19 @@ final earthquakeRepository =
   },
 
   // cache data for 15 minuts
-  cacheTime: const Duration(minutes: 15),
+  // cacheTime: const Duration(minutes: 15),
 );
+
+// See https://github.com/rrousselGit/riverpod/issues/1664
+// ignore: strict_raw_type
+extension _AutoDisposeRefHack on AutoDisposeRef {
+  // When invoked keeps your provider alive for [duration]
+  void cacheFor(Duration duration) {
+    final link = keepAlive();
+    final timer = Timer(duration, link.close);
+    onDispose(timer.cancel);
+  }
+}
 ```
 
 ## 🌎 Visualizing earthquakes as markers

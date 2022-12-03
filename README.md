@@ -39,7 +39,7 @@ gespatial Web APIs.
 
 ## :newspaper_roll: News
 
-2022-08-29
+2022-08-29 (small updates on 2022-12-03)
 * The first version of the [earthquake_map](earthquake_map) sample demonstrating state management, Web APIs for geospatial data and visualizing markers on a map view.
 
 ## :house_with_garden: Authors
