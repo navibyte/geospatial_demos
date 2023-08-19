@@ -57,7 +57,6 @@ FormatEarthquake _formatEarthquakeDefault({
         buf.write(' (');
         buf.write(_formatLocalDateFromUTC(eq.time));
         buf.write(')');
-        break;
       case PresentationKind.subtitle:
         final place = eq.place;
         if (place != null && place.isNotEmpty) {
@@ -83,7 +82,6 @@ FormatEarthquake _formatEarthquakeDefault({
           _writeDepth(buf, depth, units: units ?? defaultUnits);
           buf.write('.');
         }
-        break;
     }
 
     return buf.toString();
