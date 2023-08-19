@@ -5,7 +5,7 @@
 // Docs: https://github.com/navibyte/geospatial_demos
 
 import 'package:equatable/equatable.dart';
-import 'package:geobase/geobase.dart' show Geographic, Feature, Point;
+import 'package:geobase/geobase.dart' show Feature, Geographic, Point;
 
 /// The producer for earthquake data.
 enum EarthquakeProducer {

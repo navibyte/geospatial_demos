@@ -21,7 +21,7 @@ class MapLayerModel extends Equatable {
   /// Optional map markers currently available to be shown on a map layer.
   final Set<Marker>? markers;
 
-  // todo: here could be other items like polylines and polygons to be shown too
+  // NOTE: here could be other items like polylines and polygons to be shown too
 
   const MapLayerModel({this.isLoading = false, this.markers});
 
