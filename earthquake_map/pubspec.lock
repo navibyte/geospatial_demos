@@ -108,18 +108,18 @@ packages:
     dependency: "direct main"
     description:
       name: geobase
-      sha256: d036149ef4072935770c4bc4d4c23c969946648954bcb8cec04f27d07239c228
+      sha256: b14f1ee9f9078975d696c7896c3a0a2f0d16e2e8c5faad10536050bfe493c5c1
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.2"
+    version: "0.5.1"
   geodata:
     dependency: "direct main"
     description:
       name: geodata
-      sha256: e60fa8f44b8ceb2779d2e43e455befa9606633a3a1e5c5bbc501fad13cbe49af
+      sha256: "156d1b38b44bce6a8a23efadb1c3393c8a0cde8ae83a291707927f1d1764624b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.4"
+    version: "0.12.1"
   google_maps:
     dependency: transitive
     description:
