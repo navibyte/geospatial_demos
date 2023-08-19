@@ -5,6 +5,7 @@
 // Docs: https://github.com/navibyte/geospatial_demos
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geobase/coordinates.dart';
 import 'package:intl/intl.dart';
 
 import '/src/preferences/units.dart';
@@ -69,11 +70,13 @@ FormatEarthquake _formatEarthquakeDefault({
             units: units ?? defaultUnits,
           );
         } else {
+          // format geographic coordinates using DMS (degrees-minutes-seconds)
+          const dm = Dms.narrowSpace(type: DmsType.degMin);
           buf
             ..write('Near latitude ')
-            ..write(eq.epicenter.lat.toStringAsFixed(3))
+            ..write(eq.epicenter.latDms(dm))
             ..write('° longitude ')
-            ..write(eq.epicenter.lon.toStringAsFixed(3))
+            ..write(eq.epicenter.lonDms(dm))
             ..write('°');
         }
         final depth = eq.depthKM;
