@@ -79,6 +79,12 @@ Future<List<Earthquake>> _fetchBgsEarthquakes(EarthquakeQuery query) async {
   final location = _bgsEarthquakesUri;
   final client = OGCAPIFeatures.http(endpoint: location);
 
+  // check conformance
+  final conformance = await client.conformance();
+  if (!conformance.conformsToFeaturesCore(geoJSON: true)) {
+    throw const FormatException('Not supporting OGC API Features / GeoJSON.');
+  }
+
   // ignore: avoid_print
   print('fetching earthquakes (OGC API Features service by BGS): $location');
 
