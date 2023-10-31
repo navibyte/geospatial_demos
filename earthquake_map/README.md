@@ -10,9 +10,11 @@ The project is a part of the
 is a companion demo code repository for the 
 [Geospatial tools for Dart](https://github.com/navibyte/geospatial).
 
+✨ See also the article [Geospatial tools for Dart - version 1.0 published](https://medium.com/@navibyte/geospatial-tools-for-dart-version-1-0-published-0f9673e510b3) at Medium.
+
 Edits for this sample app:
 * 📅 2022-08-29 (the first version)
-* ✍️ 2022-12-03 (last updated)
+* ✍️ 2023-10-31 (last updated)
 
 ## :sparkles: Introduction
 
@@ -43,7 +45,7 @@ Dart packages utilized:
 
 Flutter packages utilized:
 * [flutter_riverpod](https://pub.dev/packages/flutter_riverpod): an efficient and straightforward state management library (see also [Riverpod](https://riverpod.dev/) docs)
-* [google_maps_flutter](https://pub.dev/packages/google_maps_flutter): a map view widget for iOS and Android platforms (Note: an API key must be configured)
+* [google_maps_flutter](https://pub.dev/packages/google_maps_flutter): a map view widget for iOS, Android and Web platforms (Note: an API key must be configured)
 
 <img src="assets/screenshots/settings_view.png" width="40%" title="Earthquake Map - Settings View" />
 
@@ -60,6 +62,16 @@ Check instructions to setup [Google Maps for Flutter](https://pub.dev/packages/g
     - AppDelegate -> application
         - `GMSServices.provideAPIKey("<YOUR-APIKEY>")`
 
+See also [instructions](https://pub.dev/packages/google_maps_flutter_web) to set up Google Maps for Flutter to work on web platfrom:
+
+web/index.hml should include:
+
+``````
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=drawing">
+</script>
+````
+``
 ## 🌐 Fetching geospatial data
 
 This sample uses the [geodata](https://pub.dev/packages/geodata) package that
@@ -112,7 +124,7 @@ like:
     if (point is Point) {
       // USGS writes position to feature's geometry field as a point geometry
       // with a position containg longitude, latitude, depth coordinates
-      final position = point.position.asGeographic;
+      final position = point.position.copyTo(Geographic.create);
 
       // get depth ("km below sea") from a position produced by USGS
       final depth = position.elev;
@@ -206,6 +218,12 @@ Future<List<Earthquake>> _fetchBgsEarthquakes(EarthquakeQuery query) async {
   // create an OGC API Features client for the BGS earthquake service
   final location = _bgsEarthquakesUri;
   final client = OGCAPIFeatures.http(endpoint: location);
+
+  // check conformance
+  final conformance = await client.conformance();
+  if (!conformance.conformsToFeaturesCore(geoJSON: true)) {
+    throw const FormatException('Not supporting OGC API Features / GeoJSON.');
+  }
 
   // for OGC API Features service, get first a feature source for a collection
   final source = await client.collection(_bgsEarthquakesCollection);
