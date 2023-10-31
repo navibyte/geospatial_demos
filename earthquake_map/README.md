@@ -66,12 +66,12 @@ See also [instructions](https://pub.dev/packages/google_maps_flutter_web) to set
 
 web/index.hml should include:
 
-``````
+```
 <script
   src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=drawing">
 </script>
-````
-``
+```
+
 ## 🌐 Fetching geospatial data
 
 This sample uses the [geodata](https://pub.dev/packages/geodata) package that
