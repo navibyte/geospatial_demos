@@ -5,7 +5,7 @@
 // Docs: https://github.com/navibyte/geospatial_demos
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geobase/coordinates.dart';
+import 'package:geobase/geobase.dart' show Dms, DmsType;
 import 'package:intl/intl.dart';
 
 import '/src/preferences/units.dart';

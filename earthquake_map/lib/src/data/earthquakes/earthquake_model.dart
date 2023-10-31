@@ -87,7 +87,7 @@ class Earthquake extends Equatable {
     if (point is Point) {
       // USGS writes position to feature's geometry field as a point geometry
       // with a position containg longitude, latitude, depth coordinates
-      final position = point.position.asGeographic;
+      final position = point.position.copyTo(Geographic.create);
 
       // get depth ("km below sea") from a position produced by USGS
       final depth = position.elev;
@@ -123,7 +123,7 @@ class Earthquake extends Equatable {
     if (point is Point) {
       // BGS writes position to feature's geometry field as a point geometry
       // with a position containg longitude and latitude coordinates
-      final position = point.position.asGeographic;
+      final position = point.position.copyTo(Geographic.create);
 
       // get depth ("km below sea") from a position produced by BGS
       // (BGS may has depth data also null)
