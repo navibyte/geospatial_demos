@@ -13,6 +13,8 @@ that contains Dart packages providing coordinates, geometries, feature objects,
 metadata, projections, tiling schemes, vector data models and formats, and
 gespatial Web APIs.
 
+✨ See also the article [Geospatial tools for Dart - version 1.0 published](https://medium.com/@navibyte/geospatial-tools-for-dart-version-1-0-published-0f9673e510b3) at Medium.
+
 [![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/) [![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)](https://flutter.dev/)
 
 ## :sparkles: Code samples
@@ -35,9 +37,14 @@ gespatial Web APIs.
   * [state_notifier](https://pub.dev/packages/state_notifier): helps manipulating a state object with multiple ways to update it 
 * Flutter packages utilized
   * [flutter_riverpod](https://pub.dev/packages/flutter_riverpod): an efficient and straightforward state management library (see also [Riverpod](https://riverpod.dev/) docs)
-  * [google_maps_flutter](https://pub.dev/packages/google_maps_flutter): a map view widget for iOS and Android platforms (Note: an API key must be configured)
+  * [google_maps_flutter](https://pub.dev/packages/google_maps_flutter): a map view widget for iOS, Android and web platforms (Note: an API key must be configured)
 
 ## :newspaper_roll: News
+
+2023-10-31
+* Updated [earthquake_map](earthquake_map) to use stable 1.0.0 versions of [geobase](https://pub.dev/packages/geobase) and [geodata](https://pub.dev/packages/geodata) packages
+* Google Maps for Flutter now runs on web too!
+* See also the article [Geospatial tools for Dart - version 1.0 published](https://medium.com/@navibyte/geospatial-tools-for-dart-version-1-0-published-0f9673e510b3) at Medium.
 
 2022-08-29 (small updates on 2022-12-03)
 * The first version of the [earthquake_map](earthquake_map) sample demonstrating state management, Web APIs for geospatial data and visualizing markers on a map view.

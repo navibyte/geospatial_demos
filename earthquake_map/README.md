@@ -51,7 +51,7 @@ Flutter packages utilized:
 
 ## ⚙️ Setup
 
-The demo app requires at least [Dart](https://dart.dev/) SDK 2.17 and [Flutter](https://flutter.dev/) SDK 3.0.
+The demo app requires at least [Dart](https://dart.dev/) SDK 3.0 and [Flutter](https://flutter.dev/) SDK 3.10.
 
 Check instructions to setup [Google Maps for Flutter](https://pub.dev/packages/google_maps_flutter). At least you must change API keys on:
 
