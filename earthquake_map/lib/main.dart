@@ -19,6 +19,15 @@ Set the minSdkVersion to SDK 20
     - import GoogleMaps
     - AppDelegate -> application
         GMSServices.provideAPIKey("<YOUR-APIKEY>")
+
+See also instructions to set up Google Maps for Flutter to work on web platfrom:
+https://pub.dev/packages/google_maps_flutter_web
+
+web/index.hml should include:
+
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=drawing">
+</script>
 */
 
 import 'package:flutter/material.dart';
